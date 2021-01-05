@@ -12,7 +12,6 @@ const DrinkCard = () => {
             image:""
         }
     );
-    const [error, setError] = useState(null);
   
     let randomCocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/random.php?api-key=1";
     //let searchCocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?api-key=1&s=";
@@ -20,10 +19,8 @@ const DrinkCard = () => {
 
     useEffect(() => {
         getRandomDrink()
-    }, [])
-    if (error) {
-        return <div>Error: {error.message}</div>;
-      }
+    }, []);
+
 
 //get random cocktail, fires on load with useEffect
   function getRandomDrink(){
@@ -34,24 +31,9 @@ const DrinkCard = () => {
                   const { idDrink, strDrink: drinkName, strInstructions: instructions, strDrinkThumb } = response.drinks[0];
                   let ingredientArr = buildIngredientsArray(response.drinks[0]);
                   setDrinkState({drinkName: drinkName, id: idDrink, ingredients: ingredientArr, instructions: instructions, image: strDrinkThumb});
-              },
-              (error) => {
-                  setError(error);
               }
           )
-  }
-  
-  // function setVid(videoId) {
-  //   let videoURL = "https://www.youtube.com/embed/";
-  //   videoURL += videoId;
-  //   let carouselTile = $("<div>");
-  //   carouselTile.attr("class", "carousel-item");
-  //   let nextVideo =
-  //     $(`<iframe width="100%" height="100%" src=${videoURL} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
-  //   $("#carouselOne").append(carouselTile);
-  //   carouselTile.append(nextVideo);
-  // }
-
+  };
 
 //get specific cocktail
 // function cocktail(userSearch) {
@@ -74,7 +56,6 @@ function buildIngredientsArray(drinkObj) {
     let ingredient = "strIngredient" + i;
     let measurement = "strMeasure" + i;
     if (drinkObj[ingredient] === null) {
-        console.log(ingredientsArr);
       return ingredientsArr;
     }
     ingredientsArr.push([drinkObj[ingredient], drinkObj[measurement]]);
@@ -88,24 +69,23 @@ function getIngredientList () {
   return ingredientList
 }
 
-
 return (
-    <div class="row">
-      <div class="col s12 m12 l12">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator responsive-img" src={drinkState.image} alt={drinkState.drinkName}/>
-            <h1 class="card-title large">{drinkState.drinkName}</h1>
-            <button href="" class="btn-floating halfway-fab waves-effect waves-light red"><span><i class="material-icons">add</i></span></button>
+    <div className="row card-row">
+      <div className="col s12 m12 l12 card-col">
+        <div className="card">
+          <div className="card-image waves-effect waves-light">
+            <img className="activator responsive-img" src={drinkState.image} alt={drinkState.drinkName}/>
+            <h1 className="card-title">{drinkState.drinkName}</h1>
+            <button href="" className="btn-floating halfway-fab waves-effect waves-light red"><span><i className="material-icons">add</i></span></button>
           </div>
-          <div class="card-content">
+          <div className="card-content">
             {getIngredientList()}
-            <p class="flow-text">{drinkState.instructions}</p>
+            <p className="flow-text">{drinkState.instructions}</p>
           </div>
-          <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-            <p> All This Is Here Too!</p>
-            <DrinkVideo props={drinkState.drinkName}></DrinkVideo>
+          <div className="card-reveal">
+          <span className="card-title grey-text text-darken-4">{drinkState.drinkName}<i className="material-icons right">close</i></span>
+            <p> {drinkState.instructions}</p>
+            { (drinkState.drinkName) ? <DrinkVideo name={drinkState.drinkName}/> : <div></div>}
           </div>
         </div>
       </div>
