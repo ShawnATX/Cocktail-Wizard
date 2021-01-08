@@ -19,12 +19,13 @@ const DrinkVideo = (props) => {
             if(response.items){
                 setDrinkVideoState(response.items[0].id.videoId)
             } else {
+                //never gonna give you up
                 setDrinkVideoState("DLzxrzFCyOs");
             }
         })
     }
       return (
-          <iframe title={props} width="100%" height="100%" src={videoURL + drinkVideoState} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+          <iframe title={props.name} width="90%" height="90%" src={videoURL + drinkVideoState} frameBorder="3" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
       )
     
 }
